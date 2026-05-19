@@ -70,9 +70,9 @@ function EditStudySetRoute() {
   };
 
   return (
-    <FullscreenContainer className="items-start justify-start">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
-        <div className="flex items-center justify-between">
+    <FullscreenContainer className="items-start justify-start overflow-x-hidden overflow-y-auto">
+      <div className="fixed inset-x-0 top-0 z-30 px-4 py-3">
+        <div className="mx-auto flex w-full max-w-3xl items-center justify-between rounded-3xl border border-white/10 bg-black/55 px-4 py-3 shadow-lg shadow-black/20 backdrop-blur-xl">
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
@@ -83,10 +83,15 @@ function EditStudySetRoute() {
             >
               <ArrowLeftIcon />
             </Button>
-            <h1 className="text-3xl font-semibold text-white">Edit Study Set</h1>
+            <div>
+              <p className="text-xs tracking-[0.2em] text-white/45 uppercase">Editor</p>
+              <h1 className="text-lg font-semibold text-white sm:text-xl">Edit Study Set</h1>
+            </div>
           </div>
         </div>
+      </div>
 
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-20">
         <div className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-5">
           <Input
             aria-label="Study set title"
