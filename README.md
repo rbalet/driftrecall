@@ -67,12 +67,14 @@ Refer to the [TanStack Start hosting docs](https://tanstack.com/start/latest/doc
 We use [Husky](https://typicode.github.io/husky/) to run git hooks with the following tools:
 
 - [lint-staged](https://github.com/lint-staged/lint-staged) - Run Oxfmt to format staged files on commit (`pre-commit`).
+- [commitlint](https://commitlint.js.org/) - Enforce Conventional Commit messages (`commit-msg`).
 
 #### Scripts
 
 We use **pnpm** by default, but you can modify these scripts in [package.json](./package.json) to use your preferred package manager.
 
 - **`auth:generate`** - Regenerate the [auth db schema](./src/lib/db/schema/auth.schema.ts) if you've made changes to your Better Auth [config](./src/lib/auth/auth.ts).
+- **`commitlint`** - Validate recent commit messages against the Conventional Commit rules.
 - **`db`** - Run [drizzle-kit](https://orm.drizzle.team/docs/kit-overview) commands. (e.g. `pnpm db generate`, `pnpm db studio`)
 - **`ui`** - The shadcn/ui CLI. (e.g. `pnpm ui add button`)
 - **`format`**, **`lint`** - Run Oxfmt and Oxlint, or both via `pnpm check`.

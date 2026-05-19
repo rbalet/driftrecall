@@ -7,6 +7,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node .output/server/index.mjs",
+    "commitlint": "commitlint --from HEAD~1 --to HEAD",
     "lint": "oxlint --type-aware --type-check",
     "lint:fix": "oxlint --type-aware --type-check --fix",
     "format": "oxfmt",
@@ -53,6 +54,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
+    "@commitlint/cli": "21.0.1",
+    "@commitlint/config-conventional": "21.0.1",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tailwindcss/vite": "^4.3.0",
     "@tanstack/devtools-a11y": "^0.1.3",
