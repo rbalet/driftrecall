@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { SaveIcon } from "lucide-react";
+import { ArrowLeftIcon, SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { CardEditor } from "#/components/driftrecall/card-editor";
@@ -73,10 +73,18 @@ function EditStudySetRoute() {
     <FullscreenContainer className="items-start justify-start">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-semibold text-white">Edit Study Set</h1>
-          <Button variant="outline" render={<Link to="/library" />} nativeButton={false}>
-            Back to library
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="outline"
+              size="icon"
+              render={<Link to="/library" />}
+              nativeButton={false}
+              aria-label="Back to study sets"
+            >
+              <ArrowLeftIcon />
+            </Button>
+            <h1 className="text-3xl font-semibold text-white">Edit Study Set</h1>
+          </div>
         </div>
 
         <div className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-5">
