@@ -9,15 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as LibraryRouteImport } from './routes/library'
 import { Route as GuestRouteRouteImport } from './routes/_guest/route'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StudySetIdRouteImport } from './routes/study/$setId'
+import { Route as SetsNewRouteImport } from './routes/sets/new'
 import { Route as GuestSignupRouteImport } from './routes/_guest/signup'
 import { Route as GuestLoginRouteImport } from './routes/_guest/login'
 import { Route as AuthAppRouteRouteImport } from './routes/_auth/app/route'
 import { Route as AuthAppIndexRouteImport } from './routes/_auth/app/index'
+import { Route as SetsSetIdEditRouteImport } from './routes/sets/$setId/edit'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuestRouteRoute = GuestRouteRouteImport.update({
   id: '/_guest',
   getParentRoute: () => rootRouteImport,
@@ -29,6 +44,16 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudySetIdRoute = StudySetIdRouteImport.update({
+  id: '/study/$setId',
+  path: '/study/$setId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SetsNewRoute = SetsNewRouteImport.update({
+  id: '/sets/new',
+  path: '/sets/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuestSignupRoute = GuestSignupRouteImport.update({
@@ -51,6 +76,11 @@ const AuthAppIndexRoute = AuthAppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthAppRouteRoute,
 } as any)
+const SetsSetIdEditRoute = SetsSetIdEditRouteImport.update({
+  id: '/sets/$setId/edit',
+  path: '/sets/$setId/edit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -59,17 +89,27 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/app': typeof AuthAppRouteRouteWithChildren
   '/login': typeof GuestLoginRoute
   '/signup': typeof GuestSignupRoute
+  '/sets/new': typeof SetsNewRoute
+  '/study/$setId': typeof StudySetIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sets/$setId/edit': typeof SetsSetIdEditRoute
   '/app/': typeof AuthAppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/login': typeof GuestLoginRoute
   '/signup': typeof GuestSignupRoute
+  '/sets/new': typeof SetsNewRoute
+  '/study/$setId': typeof StudySetIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sets/$setId/edit': typeof SetsSetIdEditRoute
   '/app': typeof AuthAppIndexRoute
 }
 export interface FileRoutesById {
@@ -77,26 +117,57 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_guest': typeof GuestRouteRouteWithChildren
+  '/library': typeof LibraryRoute
+  '/settings': typeof SettingsRoute
   '/_auth/app': typeof AuthAppRouteRouteWithChildren
   '/_guest/login': typeof GuestLoginRoute
   '/_guest/signup': typeof GuestSignupRoute
+  '/sets/new': typeof SetsNewRoute
+  '/study/$setId': typeof StudySetIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/sets/$setId/edit': typeof SetsSetIdEditRoute
   '/_auth/app/': typeof AuthAppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/login' | '/signup' | '/api/auth/$' | '/app/'
+  fullPaths:
+    | '/'
+    | '/library'
+    | '/settings'
+    | '/app'
+    | '/login'
+    | '/signup'
+    | '/sets/new'
+    | '/study/$setId'
+    | '/api/auth/$'
+    | '/sets/$setId/edit'
+    | '/app/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/api/auth/$' | '/app'
+  to:
+    | '/'
+    | '/library'
+    | '/settings'
+    | '/login'
+    | '/signup'
+    | '/sets/new'
+    | '/study/$setId'
+    | '/api/auth/$'
+    | '/sets/$setId/edit'
+    | '/app'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/_guest'
+    | '/library'
+    | '/settings'
     | '/_auth/app'
     | '/_guest/login'
     | '/_guest/signup'
+    | '/sets/new'
+    | '/study/$setId'
     | '/api/auth/$'
+    | '/sets/$setId/edit'
     | '/_auth/app/'
   fileRoutesById: FileRoutesById
 }
@@ -104,11 +175,30 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   GuestRouteRoute: typeof GuestRouteRouteWithChildren
+  LibraryRoute: typeof LibraryRoute
+  SettingsRoute: typeof SettingsRoute
+  SetsNewRoute: typeof SetsNewRoute
+  StudySetIdRoute: typeof StudySetIdRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  SetsSetIdEditRoute: typeof SetsSetIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_guest': {
       id: '/_guest'
       path: ''
@@ -128,6 +218,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study/$setId': {
+      id: '/study/$setId'
+      path: '/study/$setId'
+      fullPath: '/study/$setId'
+      preLoaderRoute: typeof StudySetIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sets/new': {
+      id: '/sets/new'
+      path: '/sets/new'
+      fullPath: '/sets/new'
+      preLoaderRoute: typeof SetsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_guest/signup': {
@@ -157,6 +261,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AuthAppIndexRouteImport
       parentRoute: typeof AuthAppRouteRoute
+    }
+    '/sets/$setId/edit': {
+      id: '/sets/$setId/edit'
+      path: '/sets/$setId/edit'
+      fullPath: '/sets/$setId/edit'
+      preLoaderRoute: typeof SetsSetIdEditRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -210,7 +321,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   GuestRouteRoute: GuestRouteRouteWithChildren,
+  LibraryRoute: LibraryRoute,
+  SettingsRoute: SettingsRoute,
+  SetsNewRoute: SetsNewRoute,
+  StudySetIdRoute: StudySetIdRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  SetsSetIdEditRoute: SetsSetIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
