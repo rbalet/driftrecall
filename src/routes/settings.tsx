@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
-import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
+import { Switch } from "#/components/ui/switch";
 import { useStudySettingsStore } from "#/stores/study-settings-store";
 
 export const Route = createFileRoute("/settings")({
@@ -50,9 +50,17 @@ function SettingsRoute() {
             />
           </label>
 
-          <Button variant={autoplay ? "default" : "outline"} onClick={() => setAutoplay(!autoplay)}>
-            {autoplay ? "Autoplay enabled" : "Autoplay disabled"}
-          </Button>
+          <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+            <div>
+              <p className="text-sm text-white">Autoplay</p>
+              <p className="text-sm text-white/65">
+                {autoplay
+                  ? "Automatically advance to the next card."
+                  : "Stay on the current card until you advance."}
+              </p>
+            </div>
+            <Switch checked={autoplay} onCheckedChange={setAutoplay} aria-label="Toggle autoplay" />
+          </div>
         </div>
       </section>
     </FullscreenContainer>
