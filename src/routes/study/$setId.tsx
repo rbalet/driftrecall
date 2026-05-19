@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { HouseIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { AmbientControls } from "#/components/driftrecall/ambient-controls";
@@ -156,7 +157,19 @@ function StudyModeRoute() {
     <FullscreenContainer className="select-none" onPointerMove={showControls}>
       <div className="relative z-10 flex w-full max-w-4xl flex-col gap-4">
         <div className="flex items-center justify-between gap-3 text-xs text-white/65">
-          <span>{studySet.title}</span>
+          <div className="flex items-center gap-3">
+            <Button
+              render={<Link to="/" />}
+              variant="ghost"
+              size="icon"
+              nativeButton={false}
+              aria-label="Go to home page"
+              className="text-white/70 hover:bg-white/10 hover:text-white"
+            >
+              <HouseIcon />
+            </Button>
+            <span>{studySet.title}</span>
+          </div>
           <span>
             {session.index + 1}/{session.total}
           </span>
