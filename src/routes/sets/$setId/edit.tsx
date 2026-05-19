@@ -1,7 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowLeftIcon, SaveIcon } from "lucide-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { SaveIcon } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { AppNavbar } from "#/components/driftrecall/app-navbar";
 import { CardEditor } from "#/components/driftrecall/card-editor";
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
 import { Button } from "#/components/ui/button";
@@ -89,31 +90,21 @@ function EditStudySetRoute() {
       <header className="fixed inset-x-0 top-0 z-30 px-4 py-3">
         <div
           className={cn(
-            "mx-auto flex w-full max-w-3xl items-center justify-between rounded-3xl px-4 py-3 transition-all",
+            "mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-3xl px-4 py-3 transition-all",
             showStickyBackground
               ? "bg-black/55 shadow-lg shadow-black/20 backdrop-blur-xl"
               : "bg-transparent shadow-none backdrop-blur-none",
           )}
         >
-          <div className="flex items-center gap-3">
-            <Button
-              variant="outline"
-              size="icon"
-              render={<Link to="/library" />}
-              nativeButton={false}
-              aria-label="Back to study sets"
-            >
-              <ArrowLeftIcon />
-            </Button>
-            <div>
-              <p className="text-xs tracking-[0.2em] text-white/45 uppercase">Editor</p>
-              <h1 className="text-lg font-semibold text-white sm:text-xl">Edit Study Set</h1>
-            </div>
+          <AppNavbar className="w-fit" />
+          <div>
+            <p className="text-xs tracking-[0.2em] text-white/45 uppercase">Editor</p>
+            <h1 className="text-lg font-semibold text-white sm:text-xl">Edit Study Set</h1>
           </div>
         </div>
       </header>
 
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-20">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-28 sm:pt-24">
         <div className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-5">
           <Input
             aria-label="Study set title"

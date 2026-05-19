@@ -1,8 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { HomeIcon } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
 
+import { AppNavbar } from "#/components/driftrecall/app-navbar";
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
-import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { Switch } from "#/components/ui/switch";
 import { useStudySettingsStore } from "#/stores/study-settings-store";
@@ -12,7 +11,6 @@ export const Route = createFileRoute("/settings")({
 });
 
 function SettingsRoute() {
-  const navigate = useNavigate();
   const {
     revealDelaySeconds,
     autoNextDelaySeconds,
@@ -25,17 +23,8 @@ function SettingsRoute() {
   return (
     <FullscreenContainer>
       <section className="w-full max-w-2xl rounded-[2rem] border border-white/15 bg-black/35 p-6 backdrop-blur-2xl sm:p-8">
-        <div className="flex items-center gap-3">
-          <Button
-            variant="outline"
-            size="icon"
-            aria-label="Go to home page"
-            onClick={() => navigate({ to: "/" })}
-          >
-            <HomeIcon />
-          </Button>
-          <h1 className="text-3xl font-semibold text-white">Study Settings</h1>
-        </div>
+        <AppNavbar className="w-fit" />
+        <h1 className="mt-5 text-3xl font-semibold text-white">Study Settings</h1>
         <p className="mt-2 text-sm text-white/65">Tune cadence for ambient recall sessions.</p>
 
         <div className="mt-6 space-y-4">

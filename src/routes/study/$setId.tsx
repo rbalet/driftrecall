@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { HouseIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { AmbientControls } from "#/components/driftrecall/ambient-controls";
+import { AppNavbar } from "#/components/driftrecall/app-navbar";
 import { FloatingToolbar } from "#/components/driftrecall/floating-toolbar";
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
 import { ProgressBar } from "#/components/driftrecall/progress-bar";
@@ -143,7 +143,8 @@ function StudyModeRoute() {
   if (!studySet || !session.currentCard) {
     return (
       <FullscreenContainer>
-        <div className="space-y-4 text-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <AppNavbar />
           <p className="text-sm text-white/70">Study set unavailable.</p>
           <Button render={<Link to="/library" />} nativeButton={false}>
             Back to library
@@ -155,21 +156,11 @@ function StudyModeRoute() {
 
   return (
     <FullscreenContainer className="select-none" onPointerMove={showControls}>
+      <AppNavbar floating show={controlsVisible} />
+
       <div className="relative z-10 flex w-full max-w-4xl flex-col gap-4">
         <div className="flex items-center justify-between gap-3 text-xs text-white/65">
-          <div className="flex items-center gap-3">
-            <Button
-              render={<Link to="/" />}
-              variant="ghost"
-              size="icon"
-              nativeButton={false}
-              aria-label="Go to home page"
-              className="text-white/70 hover:bg-white/10 hover:text-white"
-            >
-              <HouseIcon />
-            </Button>
-            <span>{studySet.title}</span>
-          </div>
+          <span>{studySet.title}</span>
           <span>
             {session.index + 1}/{session.total}
           </span>
