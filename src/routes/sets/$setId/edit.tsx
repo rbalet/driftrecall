@@ -102,10 +102,15 @@ function EditStudySetRoute() {
             placeholder="Description"
             className="min-h-28 w-full rounded-3xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-ring/40"
           />
-          <CardEditor cards={draft.cards} onChange={(cards) => setDraft({ ...draft, cards })} />
-          <Button onClick={onSave}>
-            <SaveIcon /> Save study set
-          </Button>
+          <CardEditor
+            cards={draft.cards}
+            onChange={(cards) => setDraft({ ...draft, cards })}
+            footerAction={
+              <Button onClick={onSave}>
+                <SaveIcon /> Save study set
+              </Button>
+            }
+          />
         </div>
       </div>
     </FullscreenContainer>

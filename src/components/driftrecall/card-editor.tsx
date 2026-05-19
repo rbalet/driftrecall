@@ -1,4 +1,5 @@
 import { PlusIcon, Trash2Icon } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
@@ -7,9 +8,11 @@ import type { StudyCardModel } from "#/types/study";
 export function CardEditor({
   cards,
   onChange,
+  footerAction,
 }: {
   cards: StudyCardModel[];
   onChange: (cards: StudyCardModel[]) => void;
+  footerAction?: ReactNode;
 }) {
   const updateCard = (index: number, patch: Partial<StudyCardModel>) => {
     onChange(cards.map((card, cardIndex) => (cardIndex === index ? { ...card, ...patch } : card)));
@@ -53,9 +56,12 @@ export function CardEditor({
         </div>
       ))}
 
-      <Button variant="outline" onClick={addCard}>
-        <PlusIcon /> Add card
-      </Button>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Button variant="outline" onClick={addCard}>
+          <PlusIcon /> Add card
+        </Button>
+        {footerAction}
+      </div>
     </div>
   );
 }
