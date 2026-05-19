@@ -7,6 +7,7 @@ import { FullscreenContainer } from "#/components/driftrecall/fullscreen-contain
 import { Button } from "#/components/ui/button";
 import { Input } from "#/components/ui/input";
 import { createEmptyStudySet, getStudySet, saveStudySet } from "#/features/study/study-repository";
+import { cn } from "#/lib/utils";
 import type { StudySet } from "#/types/study";
 
 export const Route = createFileRoute("/sets/$setId/edit")({
@@ -16,6 +17,7 @@ export const Route = createFileRoute("/sets/$setId/edit")({
 function EditStudySetRoute() {
   const { setId } = Route.useParams();
   const [draft, setDraft] = useState<StudySet | null>(null);
+  const [showStickyBackground, setShowStickyBackground] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,19 @@ function EditStudySetRoute() {
 
     load();
   }, [navigate, setId]);
+
+  useEffect(() => {
+    const syncStickyBackground = () => {
+      setShowStickyBackground(window.scrollY > 0);
+    };
+
+    syncStickyBackground();
+    window.addEventListener("scroll", syncStickyBackground, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", syncStickyBackground);
+    };
+  }, []);
 
   const validCards = useMemo(
     () =>
@@ -71,8 +86,15 @@ function EditStudySetRoute() {
 
   return (
     <FullscreenContainer className="items-start justify-start overflow-x-hidden overflow-y-auto">
-      <div className="fixed inset-x-0 top-0 z-30 px-4 py-3">
-        <div className="mx-auto flex w-full max-w-3xl items-center justify-between rounded-3xl border border-white/10 bg-black/55 px-4 py-3 shadow-lg shadow-black/20 backdrop-blur-xl">
+      <header className="fixed inset-x-0 top-0 z-30 px-4 py-3">
+        <div
+          className={cn(
+            "mx-auto flex w-full max-w-3xl items-center justify-between rounded-3xl px-4 py-3 transition-all",
+            showStickyBackground
+              ? "bg-black/55 shadow-lg shadow-black/20 backdrop-blur-xl"
+              : "bg-transparent shadow-none backdrop-blur-none",
+          )}
+        >
           <div className="flex items-center gap-3">
             <Button
               variant="outline"
@@ -89,7 +111,7 @@ function EditStudySetRoute() {
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 pt-20">
         <div className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-5">

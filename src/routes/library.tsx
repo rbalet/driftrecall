@@ -14,6 +14,7 @@ import {
   parseImportedStudySet,
   saveStudySet,
 } from "#/features/study/study-repository";
+import { cn } from "#/lib/utils";
 import type { StudySet } from "#/types/study";
 
 export const Route = createFileRoute("/library")({
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/library")({
 function LibraryRoute() {
   const [studySets, setStudySets] = useState<StudySet[]>([]);
   const [busySetId, setBusySetId] = useState<string | null>(null);
+  const [showStickyBackground, setShowStickyBackground] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
@@ -30,6 +32,19 @@ function LibraryRoute() {
 
   useEffect(() => {
     refresh();
+  }, []);
+
+  useEffect(() => {
+    const syncStickyBackground = () => {
+      setShowStickyBackground(window.scrollY > 0);
+    };
+
+    syncStickyBackground();
+    window.addEventListener("scroll", syncStickyBackground, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", syncStickyBackground);
+    };
   }, []);
 
   const handleNewSet = async () => {
@@ -67,29 +82,42 @@ function LibraryRoute() {
   };
 
   return (
-    <FullscreenContainer className="items-start justify-start">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <header className="flex flex-wrap items-center justify-between gap-3">
-          <div>
+    <FullscreenContainer className="items-start justify-start overflow-x-hidden overflow-y-auto">
+      <div className="fixed inset-x-0 top-0 z-30 px-3 py-3 sm:px-4">
+        <header
+          className={cn(
+            "mx-auto flex w-full max-w-6xl flex-col gap-3 rounded-3xl px-4 py-3 transition-all sm:flex-row sm:items-center sm:justify-between",
+            showStickyBackground
+              ? "bg-black/55 shadow-lg shadow-black/20 backdrop-blur-xl"
+              : "bg-transparent shadow-none backdrop-blur-none",
+          )}
+        >
+          <div className="min-w-0">
             <div className="flex items-center gap-3">
               <Button
                 variant="outline"
-                size="icon"
+                size="icon-sm"
                 aria-label="Go to home page"
                 onClick={() => navigate({ to: "/" })}
               >
                 <HomeIcon />
               </Button>
-              <h1 className="text-3xl font-semibold text-white sm:text-4xl">Study Set Library</h1>
+              <h1 className="text-2xl font-semibold text-white sm:text-3xl">Study Set Library</h1>
             </div>
-            <p className="mt-1 text-sm text-white/65">
+            <p className="mt-1 max-w-2xl text-sm text-white/65">
               Locally stored with IndexedDB. Offline-ready by design.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <Button onClick={handleNewSet}>Create study set</Button>
-            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+          <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:justify-end">
+            <Button className="flex-1 sm:flex-none" onClick={handleNewSet}>
+              Create study set
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1 sm:flex-none"
+              onClick={() => fileInputRef.current?.click()}
+            >
               <UploadIcon /> Import JSON
             </Button>
             <input
@@ -102,7 +130,9 @@ function LibraryRoute() {
             />
           </div>
         </header>
+      </div>
 
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 pt-40 sm:pt-32">
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {studySets.map((studySet) => (
             <SetCard
