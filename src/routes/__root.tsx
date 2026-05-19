@@ -32,21 +32,23 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: "width=device-width, initial-scale=1",
       },
       {
-        // scaffold:title
-        title: "TanStarter",
+        title: "DriftRecall",
       },
       {
         name: "description",
-        // scaffold:description
-        content: "A minimal starter template for 🏝️ TanStack Start.",
+        content: "Ambient second-screen learning for calm passive recall.",
+      },
+      {
+        name: "theme-color",
+        content: "#09090b",
       },
     ],
     links: [
-      // Replace with your icons here, or remove if you have a favicon.ico in public/
       {
         rel: "icon",
-        href: "https://mugnavo.com/favicon.ico",
+        href: "/icon.svg",
       },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "stylesheet", href: appCss },
     ],
   }),
