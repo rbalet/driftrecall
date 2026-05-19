@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { UploadIcon } from "lucide-react";
+import { HomeIcon, UploadIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
@@ -71,7 +71,17 @@ function LibraryRoute() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
         <header className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl">Study Set Library</h1>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label="Go to home page"
+                onClick={() => navigate({ to: "/" })}
+              >
+                <HomeIcon />
+              </Button>
+              <h1 className="text-3xl font-semibold text-white sm:text-4xl">Study Set Library</h1>
+            </div>
             <p className="mt-1 text-sm text-white/65">
               Locally stored with IndexedDB. Offline-ready by design.
             </p>
