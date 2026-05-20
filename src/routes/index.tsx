@@ -1,3 +1,4 @@
+import { SiGithub } from "@icons-pack/react-simple-icons";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRightIcon, LibraryIcon, SettingsIcon, SparklesIcon } from "lucide-react";
 
@@ -22,6 +23,14 @@ function LandingPage() {
           DriftRecall reveals knowledge cards with quiet motion and automatic cadence, so you can
           retain more while coding, working, or gaming.
         </p>
+        <a
+          href="https://github.com/rbalet/driftrecall"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-xs tracking-[0.18em] text-white/70 uppercase transition-colors hover:text-white"
+        >
+          Contribute on GitHub <SiGithub className="size-3.5" />
+        </a>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button render={<Link to="/library" />} size="lg" nativeButton={false}>
