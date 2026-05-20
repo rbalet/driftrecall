@@ -72,6 +72,9 @@ function EditStudySetRoute() {
       ...draft,
       title: draft.title.trim() || "Untitled Study Set",
       description: draft.description.trim(),
+      labels: draft.labels
+        .map((label) => label.trim())
+        .filter((label, index, labels) => label.length > 0 && labels.indexOf(label) === index),
       cards: validCards,
     };
 
@@ -128,6 +131,21 @@ function EditStudySetRoute() {
             onChange={(event) => setDraft({ ...draft, description: event.currentTarget.value })}
             placeholder="Description"
             className="min-h-28 w-full rounded-3xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/40 focus-visible:ring-2 focus-visible:ring-ring/40"
+          />
+          <Input
+            aria-label="Study set labels"
+            value={draft.labels.join(", ")}
+            onChange={(event) =>
+              setDraft({
+                ...draft,
+                labels: event.currentTarget.value
+                  .split(",")
+                  .map((label) => label.trim())
+                  .filter(Boolean),
+              })
+            }
+            placeholder="Labels (comma-separated)"
+            className="bg-white/10 text-white placeholder:text-white/40"
           />
           <CardEditor
             cards={draft.cards}

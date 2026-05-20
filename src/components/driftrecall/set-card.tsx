@@ -23,6 +23,18 @@ export function SetCard({
       <div className="space-y-2">
         <h2 className="text-lg font-semibold text-white">{set.title}</h2>
         <p className="text-sm text-white/70">{set.description || "No description yet."}</p>
+        {set.labels.length ? (
+          <div className="flex flex-wrap gap-2">
+            {set.labels.map((label) => (
+              <span
+                key={label}
+                className="rounded-full border border-white/10 bg-white/8 px-2 py-1 text-xs text-white/75"
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        ) : null}
         <p className="text-xs text-white/50">{set.cards.length} cards</p>
       </div>
 
