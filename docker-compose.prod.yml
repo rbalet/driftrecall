@@ -1,0 +1,14 @@
+services:
+  api:
+    container_name: ${CONTAINER_NAME}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    environment:
+      - PORT=${PORT}
+    deploy:
+      update_config:
+        parallelism: 2
+        delay: 10s
+        order: start-first
