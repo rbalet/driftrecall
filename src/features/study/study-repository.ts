@@ -18,6 +18,7 @@ export function createEmptyStudySet(): StudySet {
     id: newId(),
     title: "Untitled Study Set",
     description: "",
+    labels: [],
     createdAt: now,
     updatedAt: now,
     cards: [
@@ -37,6 +38,22 @@ export async function ensureSeedStudySets() {
 
   if (!hasRows) {
     await driftRecallDb.studySets.bulkAdd(defaultStudySets);
+    return;
+  }
+
+  const studySets = await driftRecallDb.studySets.toArray();
+  const updates = studySets
+    .filter((studySet) => !Array.isArray((studySet as Partial<StudySet>).labels))
+    .map((studySet) => {
+      const defaults = defaultStudySets.find(
+        (defaultStudySet) => defaultStudySet.id === studySet.id,
+      );
+
+      return normalizeStudySet(studySet, defaults?.labels ?? []);
+    });
+
+  if (updates.length) {
+    await driftRecallDb.studySets.bulkPut(updates);
   }
 }
 
@@ -47,7 +64,9 @@ export async function listStudySets() {
 
   const studySets = await driftRecallDb.studySets.toArray();
 
-  return studySets.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  return studySets
+    .map((studySet) => normalizeStudySet(studySet))
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
 export async function getStudySet(setId: string) {
@@ -57,14 +76,14 @@ export async function getStudySet(setId: string) {
 
   const studySet = await driftRecallDb.studySets.get(setId);
 
-  return studySet ?? null;
+  return studySet ? normalizeStudySet(studySet) : null;
 }
 
 export async function saveStudySet(studySet: StudySet) {
   if (!isBrowser()) return;
 
   const next: StudySet = {
-    ...studySet,
+    ...normalizeStudySet(studySet),
     updatedAt: new Date().toISOString(),
   };
 
@@ -89,6 +108,7 @@ export async function duplicateStudySet(setId: string) {
     ...studySet,
     id: newId(),
     title: `${studySet.title} (Copy)`,
+    labels: [...studySet.labels],
     createdAt: now,
     updatedAt: now,
     cards: studySet.cards.map((card) => ({
@@ -128,6 +148,34 @@ function normalizeCards(cards: unknown): StudyCardModel[] {
     .filter((card): card is StudyCardModel => Boolean(card));
 }
 
+function normalizeLabels(labels: unknown, fallback: string[] = []) {
+  const source = Array.isArray(labels) ? labels : fallback;
+  const seen = new Set<string>();
+
+  return source.flatMap((label) => {
+    if (typeof label !== "string") return [];
+
+    const normalized = label.trim();
+
+    if (!normalized) return [];
+
+    const key = normalized.toLocaleLowerCase();
+
+    if (seen.has(key)) return [];
+
+    seen.add(key);
+
+    return [normalized];
+  });
+}
+
+function normalizeStudySet(studySet: StudySet, fallbackLabels: string[] = []): StudySet {
+  return {
+    ...studySet,
+    labels: normalizeLabels((studySet as Partial<StudySet>).labels, fallbackLabels),
+  };
+}
+
 export function parseImportedStudySet(rawText: string): StudySet | null {
   let parsed: unknown;
 
@@ -155,6 +203,7 @@ export function parseImportedStudySet(rawText: string): StudySet | null {
     id: newId(),
     title,
     description: typeof maybeSet.description === "string" ? maybeSet.description : "",
+    labels: normalizeLabels(maybeSet.labels),
     createdAt: now,
     updatedAt: now,
     cards,

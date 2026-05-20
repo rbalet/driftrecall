@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { UploadIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AppNavbar } from "#/components/driftrecall/app-navbar";
 import { FullscreenContainer } from "#/components/driftrecall/fullscreen-container";
@@ -24,6 +24,7 @@ export const Route = createFileRoute("/library")({
 
 function LibraryRoute() {
   const [studySets, setStudySets] = useState<StudySet[]>([]);
+  const [selectedLabel, setSelectedLabel] = useState<string | null>(null);
   const [busySetId, setBusySetId] = useState<string | null>(null);
   const [showStickyBackground, setShowStickyBackground] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -34,6 +35,22 @@ function LibraryRoute() {
   useEffect(() => {
     refresh();
   }, []);
+
+  const availableLabels = useMemo(
+    () =>
+      [...new Set(studySets.flatMap((studySet) => studySet.labels))].sort((left, right) =>
+        left.localeCompare(right),
+      ),
+    [studySets],
+  );
+
+  const filteredStudySets = useMemo(
+    () =>
+      selectedLabel
+        ? studySets.filter((studySet) => studySet.labels.includes(selectedLabel))
+        : studySets,
+    [selectedLabel, studySets],
+  );
 
   useEffect(() => {
     const syncStickyBackground = () => {
@@ -127,8 +144,31 @@ function LibraryRoute() {
       </div>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 pt-40 sm:pt-32">
+        {availableLabels.length ? (
+          <section className="flex flex-wrap items-center gap-2">
+            <span className="text-xs tracking-[0.2em] text-white/45 uppercase">Filter</span>
+            <Button
+              variant={selectedLabel ? "outline" : "secondary"}
+              size="sm"
+              onClick={() => setSelectedLabel(null)}
+            >
+              All
+            </Button>
+            {availableLabels.map((label) => (
+              <Button
+                key={label}
+                variant={selectedLabel === label ? "secondary" : "outline"}
+                size="sm"
+                onClick={() => setSelectedLabel(label)}
+              >
+                {label}
+              </Button>
+            ))}
+          </section>
+        ) : null}
+
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {studySets.map((studySet) => (
+          {filteredStudySets.map((studySet) => (
             <SetCard
               key={studySet.id}
               set={studySet}
@@ -154,7 +194,11 @@ function LibraryRoute() {
           ))}
         </section>
 
-        {!studySets.length ? <p className="text-sm text-white/60">No study sets found.</p> : null}
+        {!filteredStudySets.length ? (
+          <p className="text-sm text-white/60">
+            {selectedLabel ? `No study sets found for "${selectedLabel}".` : "No study sets found."}
+          </p>
+        ) : null}
 
         {busySetId ? <p className="text-xs text-white/50">Updating {busySetId}…</p> : null}
       </div>

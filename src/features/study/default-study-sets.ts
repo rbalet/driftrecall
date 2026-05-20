@@ -7,6 +7,7 @@ export const defaultStudySets: StudySet[] = [
     id: "capitals-of-the-world",
     title: "Capitals of the World",
     description: "Practice country-capital recall with globally distributed examples.",
+    labels: ["Geography"],
     createdAt: now,
     updatedAt: now,
     cards: [
@@ -22,6 +23,7 @@ export const defaultStudySets: StudySet[] = [
     id: "basic-japanese-vocabulary",
     title: "Basic Japanese Vocabulary",
     description: "Foundational Japanese terms for everyday context.",
+    labels: ["Japanese", "Lang"],
     createdAt: now,
     updatedAt: now,
     cards: [
@@ -37,6 +39,7 @@ export const defaultStudySets: StudySet[] = [
     id: "famous-historical-dates",
     title: "Famous Historical Dates",
     description: "Anchor major historical events with timeline memory cues.",
+    labels: ["History"],
     createdAt: now,
     updatedAt: now,
     cards: [
@@ -52,6 +55,7 @@ export const defaultStudySets: StudySet[] = [
     id: "programming-concepts",
     title: "Programming Concepts",
     description: "Core software engineering concepts to keep top-of-mind.",
+    labels: ["Programming"],
     createdAt: now,
     updatedAt: now,
     cards: [

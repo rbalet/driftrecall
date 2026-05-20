@@ -8,6 +8,7 @@ export interface StudySet {
   id: string;
   title: string;
   description: string;
+  labels: string[];
   createdAt: string;
   updatedAt: string;
   cards: StudyCardModel[];

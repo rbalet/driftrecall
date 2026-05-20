@@ -1,14 +1,14 @@
 services:
   db:
-    image: postgres:alpine
+    image: postgres:18.4-alpine
+    hostname: ${DATABASE_HOST}
     ports:
-      - 5432:5432
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
-      - postgres_data_tanstarter:/var/lib/postgresql
+      - postgres_data_tc_website:/var/lib/postgresql/data
     environment:
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=tanstarter
+      - POSTGRES_DB=driftrecall
 
 volumes:
-  postgres_data_tanstarter:
+  postgres_data_driftrecall:
